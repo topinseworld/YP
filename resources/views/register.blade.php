@@ -1,6 +1,6 @@
-@extends('lauout.index')
+@extends('layout.index')
 @section('main')
-    <form action="{{ route('register') }}">
+    <form action="{{ route('register') }}" method="POST">
         <h1>Register</h1>
         @csrf
         <label>Name</label>

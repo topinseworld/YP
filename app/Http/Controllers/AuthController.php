@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -15,18 +19,28 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
+        $validator = Validator::make($request->all(), [
+            'full_name'=>'required|string|min:5',
+            'email'=>'required|email|max:255',
+            'password'=>'required|string|min:5|max:125',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+        
         User::create([
             'full_name'=>$request->full_name,
             'email'=>$request->email,
-            'password'=>$request->password,
+            'password'=>hash::make($request -> password),
             'role'=>'user',
         ]);
 
-        return redirect()->route('showLogin')->with('success', '');
+        return redirect()->route('showLogin')->with('success', 'Вы успешно зарегистрировались!');
     }
 
     public function login(Request $request){
-        $user = User::where('email', $request->email)->firs();
+        $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
@@ -42,6 +56,6 @@ class AuthController extends Controller
     public function logout(){
         Auth::logout();
 
-        return redirect()->route('showLogin')->with('success', 'вы успешно вышли из аккаунта')
+        return redirect()->route('showLogin')->with('success', 'вы успешно вышли из аккаунта');
     }
 }

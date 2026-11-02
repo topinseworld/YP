@@ -10,7 +10,7 @@ class Movie extends Model
 {
     public function genres()
     {
-        return $this -> belongsToMany(Genre::class);
+        return $this -> belongsToMany(Genre::class, 'movie_genre', 'movie_id', 'genre_id');
     }
     
     public function images()

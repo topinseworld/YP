@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('halls', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('rows');
-            $table->string('seats');
+            $table->string('name', 100);
+            $table->integer('rows')->insigned();
+            $table->integer('seats')->insigned();
             $table->timestamps();
         });
     }

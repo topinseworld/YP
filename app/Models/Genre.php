@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Genre extends Model
 {
-    //
+    public function movies()
+    {
+        return $this -> belongsToMany(Movie::class, 'movie_genre', 'genre_id', 'movie_id');
+    }
 }
